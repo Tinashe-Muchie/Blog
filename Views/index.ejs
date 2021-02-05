@@ -33,12 +33,12 @@
               <%- blogpost.title %>
             </h2>
             <h3 class="post-subtitle">
-              <%- blogpost.body %>
+              <%- blogpost.subtitle %>
             </h3>
           </a>
           <p class="post-meta">Posted by
-            <a href="#">Start Bootstrap</a>
-            on September 24, 2019</p>
+            <a href="#"><%- blogpost.username %></a>
+            on <%- blogpost.datePosted.toDateString() %></p>
         </div>
         <hr>
         <%}) %>

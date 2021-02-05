@@ -6,10 +6,19 @@ create.get('/new', (req, res)=>{
     res.render('create')
 })
 
-create.post('/store', async (req, res)=>{
-    console.log(req.body)
-    await BlogPost.create(req.body)
-    res.redirect('/')
+create.post('/store', (req, res)=>{
+    let image = req.files.image
+    let uploadPath = path.resolve(__dirname, '/public/img', image.name)
+    image.mv(uploadPath, async function(error){
+        if (error)
+        return res.status(500).send(error)
+
+        await BlogPost.create({
+            ...req.body,
+            image: '/img/' + image.name,
+        })
+        res.redirect('/')
+    })
 })
 
 module.exports = create
