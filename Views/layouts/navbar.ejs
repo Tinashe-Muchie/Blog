@@ -11,16 +11,20 @@
             <a class="nav-link" href="/">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/about">About</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/post">Sample Post</a>
-          </li>
-          <li class="nav-item">
+            <% if(loggedIn) { %>
             <a class="nav-link" href="/posts/new">New Post</a>
+            </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/users/logout">Logout</a>
+          </li>
+            <% } %>
+          <li class="nav-item">
+            <% if(!loggedIn) { %>
+            <a class="nav-link" href="/users/login">Login</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/contact">Contact</a>
+            <a class="nav-link" href="/users/signup">Register</a>
+            <% } %>
           </li>
         </ul>
       </div>
