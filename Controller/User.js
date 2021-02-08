@@ -29,38 +29,30 @@ userApi.post('/login', isNotLogged, async function(req, res){
         _id: user._id,
         username: user.username
     }
-    session.save(()=>{
-        res.status(200).json({
-            status: 'Welcome'
-        })
-    })
+    session.save()
+    res.redirect('/posts/new')
    } catch(error){
        res.status(403).json({error: error.message})
    }
-})
-userApi.post('/logout', isLogged, function(req, res){
-    req.session.destroy()
-    res.status(200).json({
-        status: 'Bye Bye'
-    })
 })
 userApi.post('/signup', async function(req, res){
     try{
         const {body} = req
         const {username, password} = body
         const user = await User.signup(username, password)
-        res.status(201).json({
-            status: 'Created'
-        })
+        res.redirect('/users/login')
     } catch(error) {
         res.status(403).json({error: error.message})
     }
 })
-
-userApi.get((req, res)=>{
+userApi.get('/logout', isLogged, function(req, res){
+    req.session.destroy()
+    res.redirect('/')
+})
+userApi.get('/signup',(req, res)=>{
     res.render('register')
 })
-userApi.get((req, res)=>{
+userApi.get('/login',(req, res)=>{
     res.render('login')
 })
 

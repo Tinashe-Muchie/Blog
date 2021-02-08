@@ -1,5 +1,6 @@
 const express = require('express')
 const BlogPost = require('../Models/BlogPost')
+const path = require('path')
 const create = express.Router()
 
 create.get('/new', (req, res)=>{
@@ -8,7 +9,7 @@ create.get('/new', (req, res)=>{
 
 create.post('/store', (req, res)=>{
     let image = req.files.image
-    let uploadPath = path.resolve(__dirname, '/public/img', image.name)
+    let uploadPath = path.resolve(__dirname, '../public/img', image.name)
     image.mv(uploadPath, async function(error){
         if (error)
         return res.status(500).send(error)

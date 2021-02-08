@@ -1,6 +1,6 @@
 const mongoose = require('mongoose') 
 const { connection, Schema} = mongoose
-const crypto = require('crypto-js')
+const bcrypt = require('bcrypt')
 
 const UserSchema = new Schema({
     username: {
@@ -10,7 +10,7 @@ const UserSchema = new Schema({
         required: [true, 'username is required'],
         unique: [true, 'username must be unique'],
         validate: function(value){
-            return '/[a-zA-Z]+$/'.test(value)
+            return /[a-zA-Z]+$/.test(value)
         },
         message: '{value} is not a valid username'
     }, 
@@ -18,25 +18,29 @@ const UserSchema = new Schema({
 })
 
 UserSchema.static('login', async function(usr, pwd){
-    const hash = crypto.createHash('sha256').update(String(pwd))
     const user = await this.findOne()
                 .where('username', usr)
-                .where('password', hash.digest('hex'))
-    if(!user) throw new Error('Incorrect credentials')
-    delete user.password
+    if(user) {
+        bcrypt.compare(pwd, user.password, function(error, result){
+            if(!result) {
+                delete pwd
+            }
+        })
+    }
     return user
 })
 UserSchema.static('signup', async function(usr, pwd){
     if(pwd.lenghth < 6){
         throw new Error('Password is too short')
     }
-    const hash = crypto.createHash('sha256').update(pwd)
     const exist = await this.findOne()
                 .where('username', usr)
     if(exist) throw new Error('username already exists')
     const user = await this.create({
         username: usr,
-        password: hash.digest('hex'),
+        password: bcrypt.hash(pwd, 10, function(error, hash){
+            this.password = hash
+        }),
     })
     return user
 })
@@ -44,7 +48,7 @@ UserSchema.method('changePass', async function(pwd){
     if(pwd.lenghth < 6){
         throw new Error('Password is too short')
     }
-    const hash = crypto.createHash('sha256').update(pwd)
+    const hash = crypton.createHash('sha256').update(pwd)
     this.password = hash.digest('hex')
     return this.save()
 })
