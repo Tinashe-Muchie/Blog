@@ -5,7 +5,11 @@ const BlogSchema = new Schema ({
     title: {type: String, required: true},
     subtitle: {type: String, required: true},
     body: {type: String, required: true},
-    username: {type: String},
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true,
+    },
     datePosted: {
         type: Date,
         default: new Date()

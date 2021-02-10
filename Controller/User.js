@@ -20,6 +20,7 @@ const isNotLogged = (({session}, res, next)=>{
     : next()
 })
 
+
 userApi.post('/login', isNotLogged, async function(req, res){
    try{
     const {session, body} = req
@@ -32,7 +33,8 @@ userApi.post('/login', isNotLogged, async function(req, res){
     session.save()
     res.redirect('/posts/new')
    } catch(error){
-       res.status(403).json({error: error.message})
+       req.flash('loginError', error.message)
+       return res.redirect('/users/login')
    }
 })
 userApi.post('/signup', async function(req, res){
@@ -42,18 +44,24 @@ userApi.post('/signup', async function(req, res){
         const user = await User.signup(username, password)
         res.redirect('/users/login')
     } catch(error) {
-        res.status(403).json({error: error.message})
+        req.flash('validationError', error.message)
+        return res.redirect('/users/signup')
     }
 })
 userApi.get('/logout', isLogged, function(req, res){
     req.session.destroy()
     res.redirect('/')
 })
+
 userApi.get('/signup',(req, res)=>{
-    res.render('register')
+    res.render('register', {
+        errors: req.flash('validationError'),
+    })
 })
 userApi.get('/login',(req, res)=>{
-    res.render('login')
+    res.render('login', {
+        err: req.flash('loginError'),
+    })
 })
 
 module.exports = userApi

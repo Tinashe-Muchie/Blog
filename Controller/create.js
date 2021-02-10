@@ -4,7 +4,9 @@ const path = require('path')
 const create = express.Router()
 
 create.get('/new', (req, res)=>{
-    res.render('create')
+    res.render('create', {
+        createPost: true
+    })
 })
 
 create.post('/store', (req, res)=>{
@@ -17,6 +19,7 @@ create.post('/store', (req, res)=>{
         await BlogPost.create({
             ...req.body,
             image: '/img/' + image.name,
+            userId: req.session.user
         })
         res.redirect('/')
     })

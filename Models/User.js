@@ -14,44 +14,37 @@ const UserSchema = new Schema({
         },
         message: '{value} is not a valid username'
     }, 
-    password: String
+    password: {
+        type: String,
+        required: [true, 'password is required']
+    }
+})
+
+UserSchema.static('signup', async function(usr, pwd){
+        if(pwd.length < 6) throw new Error('Password is too short, 6 characters minimum')
+        const exist = await this.findOne()
+                    .where('username', usr)
+        if(exist) throw new Error('username already exists') 
+        const hash = bcrypt.hashSync(pwd, 10)
+        const user = await this.create({
+            username: usr,
+            password: hash,
+        })
+    return user
 })
 
 UserSchema.static('login', async function(usr, pwd){
-    const user = await this.findOne()
-                .where('username', usr)
-    if(user) {
-        bcrypt.compare(pwd, user.password, function(error, result){
-            if(!result) {
-                delete pwd
-            }
-        })
+        const user = await this.findOne()
+                    .where('username', usr)
+        if(!user){
+            throw new Error ('Incorrect username')
+        }    
+        if (!bcrypt.compareSync(pwd, user.password)){
+            throw new Error('Invalid password')
+        } 
+        return user
     }
-    return user
-})
-UserSchema.static('signup', async function(usr, pwd){
-    if(pwd.lenghth < 6){
-        throw new Error('Password is too short')
-    }
-    const exist = await this.findOne()
-                .where('username', usr)
-    if(exist) throw new Error('username already exists')
-    const user = await this.create({
-        username: usr,
-        password: bcrypt.hash(pwd, 10, function(error, hash){
-            this.password = hash
-        }),
-    })
-    return user
-})
-UserSchema.method('changePass', async function(pwd){
-    if(pwd.lenghth < 6){
-        throw new Error('Password is too short')
-    }
-    const hash = crypton.createHash('sha256').update(pwd)
-    this.password = hash.digest('hex')
-    return this.save()
-})
+)
 
 const User = connection.model('User', UserSchema)
 

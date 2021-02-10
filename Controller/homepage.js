@@ -4,7 +4,7 @@ const homepage = express.Router()
 
 
 homepage.get('/', async (req, res)=>{
-    const blogposts = await BlogPost.find({})
+    const blogposts = await BlogPost.find({}).populate('userId')
     res.render('index', {
         blogposts
     })
