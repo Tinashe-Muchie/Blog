@@ -2,7 +2,7 @@ const express = require('express')
 const User = require('../Models/User')
 const userApi = express.Router()
 
-// request handler to check whether the user is logged on
+// check whether the user is logged on
 const isLogged = (({session}, res, next)=>{
     (!session.user)
     ? res.status(403).json({
@@ -11,7 +11,7 @@ const isLogged = (({session}, res, next)=>{
     : next()
 })
 
-// request handler to chech whether the use is not logged in
+// check whether the user is not logged in
 const isNotLogged = (({session}, res, next)=>{
     (session.user)
     ? res.status(403).json({
