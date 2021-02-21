@@ -48,7 +48,7 @@ userApi.post('/signup', async function(req, res){
         return res.redirect('/users/signup')
     }
 })
-userApi.get('/logout', isLogged, function(req, res){
+userApi.post('/logout', isLogged, function(req, res){
     req.session.destroy()
     res.redirect('/')
 })
