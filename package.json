@@ -13,9 +13,6 @@
   },
   "author": "",
   "license": "ISC",
-  "engines": {
-    "node":"15.9.0"
-  },
   "bugs": {
     "url": "https://github.com/Tinashe-Muchie/Blog/issues"
   },
