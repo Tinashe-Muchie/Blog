@@ -9,10 +9,12 @@ const UserSchema = new Schema({
         maxlength: 20,
         required: [true, 'username is required'],
         unique: [true, 'username must be unique'],
-        validate: function(value){
-            return /[a-zA-Z]+$/.test(value)
-        },
-        message: '{value} is not a valid username'
+        validate: {
+            validator: function(value){
+                return /[a-zA-Z]+$/.test(value)
+                   },
+             message: '{value} is not a valid username'
+           },
     }, 
     password: {
         type: String,
