@@ -60,7 +60,10 @@ app.use('/users', userApi)
 
 app.use((req, res)=> res.render('notfound'))
 
-
+let port = process.env.PORT;
+if(port == null || port == "") {
+    port = 4000;
+}
 app.listen(
-    4000, console.log('Web Server listening on port 4000')
+    port, ()=> {console.log('Web Server listening on port 4000')}
 )
