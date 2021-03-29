@@ -65,5 +65,5 @@ if(port == null || port == "") {
     port = 4000;
 }
 app.listen(
-    port, ()=> {console.log('Web Server listening on port 4000')}
+    port, ()=> {console.log('App listening...')}
 )
