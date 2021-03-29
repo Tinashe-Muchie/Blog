@@ -12,6 +12,9 @@
     "url": "git+https://github.com/Tinashe-Muchie/Blog.git"
   },
   "author": "",
+  "engines":{
+    "node": "15.9.0"
+  },
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/Tinashe-Muchie/Blog/issues"
