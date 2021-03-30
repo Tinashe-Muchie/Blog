@@ -4,7 +4,7 @@
   "description": "A full stake blog site created using Node.js, MongoDB, and Express",
   "main": "index.js",
   "scripts": {
-    "start": "index.js",
+    "start": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -30,7 +30,8 @@
     "express": "^4.17.1",
     "express-fileupload": "^1.2.1",
     "express-session": "^1.17.1",
-    "mongoose": "^5.11.14"
+    "mongoose": "^5.11.14",
+    "nodemon": "2.0.7"
   },
   "devDependencies": {
     "nodemon": "^2.0.7"
